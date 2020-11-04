@@ -1,6 +1,6 @@
 <template>
   <div class="goods">
-    <goods-list-item v-for="item in goods" :goods-item="item"/>
+    <goods-list-item v-for="item in goods" :key=item.index :goods-item="item" />
   </div>
 </template>
 
@@ -15,12 +15,13 @@
     props: {
       goods: {
         type: Array,
-        default() {
+        default () {
           return []
         }
       }
     }
   }
+
 </script>
 
 <style scoped>
@@ -31,6 +32,5 @@
 
     padding: 2px;
   }
-
 
 </style>

@@ -1,43 +1,40 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-const Home = () => import('views/Home/Home.vue')
-const Category = () => import('views/Category/Category.vue')
-const ShopCart = () => import('views/Shopcart/Shopcart.vue')
-const Profile = () => import('views/Profile/Profile.vue')
 
+const Home = () => import('../views/Home/Home.vue')
+const Category = () => import('../views/Category/Category.vue')
+const Cart = () => import('../views/Shopcart/Shopcart.vue')
+const Profile = () => import('../views/Profile/Profile.vue')
+
+// 1.安装插件
 Vue.use(VueRouter)
 
+// 2.创建router
 const routes = [
   {
-    path: '/',
+    path: '',
     redirect: '/home'
   },
   {
     path: '/home',
-    name: 'Home',
     component: Home
   },
   {
     path: '/category',
-    name: 'Category',
     component: Category
   },
   {
-    path: '/shopcart',
-    name: 'ShopCart',
-    component: ShopCart
+    path: '/cart',
+    component: Cart
   },
   {
     path: '/profile',
-    name: 'Profile',
     component: Profile
   }
 ]
-
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+  routes,
+  mode: 'history'
 })
 
 export default router
