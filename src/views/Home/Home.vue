@@ -14,7 +14,7 @@
 <script>
   import NavBar from 'components/common/navbar/NavBar.vue'
   import HomeSwiper from './child/HomeSwiper'
-  import HomeRecommends from './child/HomeRecommends'
+  import HomeRecommends from './child/RecommendView'
   import FeatureView from './child/FeatureView'
 
   import TabControl from 'components/content/tabControl/TabControl.vue'
