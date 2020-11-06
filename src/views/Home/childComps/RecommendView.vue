@@ -1,6 +1,6 @@
 <template>
   <div class="recommend">
-    <div v-for="item in recommends" class="recommend-item">
+    <div v-for="item in recommends" :key=item.index class="recommend-item">
       <a :href="item.link">
         <img :src="item.image" alt="">
         <div>{{item.title}}</div>
@@ -15,12 +15,13 @@
     props: {
       recommends: {
         type: Array,
-        default() {
+        default () {
           return []
         }
       }
     }
   }
+
 </script>
 
 <style scoped>
@@ -30,8 +31,8 @@
     text-align: center;
     font-size: 12px;
 
-    padding: 10px 0 20px;
-    border-bottom: 10px solid #eee;
+    padding: 10px 0 10px;
+    border-bottom: 5px solid #eee;
   }
 
   .recommend-item {
@@ -43,4 +44,5 @@
     height: 70px;
     margin-bottom: 10px;
   }
+
 </style>

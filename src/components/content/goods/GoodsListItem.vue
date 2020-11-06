@@ -1,6 +1,6 @@
 <template>
-  <div class="goods-item">
-    <img :src="goodsItem.show.img" alt="">
+  <div class="goods-item" @click="itemClick">
+    <img :src="goodsItem.show.img" alt="" @load="imageLoad">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">{{goodsItem.price}}</span>
@@ -15,12 +15,22 @@
     props: {
       goodsItem: {
         type: Object,
-        default() {
+        default () {
           return {}
         }
       }
-    }
+    },
+    methods: {
+      imageLoad() {
+        // 利用事件总线发射事件
+        this.$bus.$emit('itemImageLoad')
+      },
+      itemClick() {
+        this.$router.push('/detail/' + this.goodsItem.id)
+      }
+    },
   }
+
 </script>
 
 <style scoped>
@@ -71,4 +81,5 @@
     height: 14px;
     background: url("~assets/img/common/collect.svg") 0 0/14px 14px;
   }
+
 </style>

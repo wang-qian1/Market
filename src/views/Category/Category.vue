@@ -125,13 +125,18 @@
     },
     // 组件创建完后调用
     mounted() {
+      // 默认情况下BScroll是不可以实时的监听滚动位置
+      // probe 侦测
+      // 0,1都是不侦测实时的位置
+      // 2: 在手指滚动的过程中侦测, 手指离开后的惯性滚动过程中不侦测.
+      // 3: 只要是滚动, 都侦测.
       this.scroll = new BScroll(this.$refs.aaaa, {
-        // probeType: 3,
-        // pullUpLoad: true
+        probeType: 3,
+        pullUpLoad: true
       })
 
       this.scroll.on('scroll', (position) => {
-        console.log(position);
+        // console.log(position);
       })
 
       this.scroll.on('pullingUp', () => {
@@ -147,6 +152,7 @@
       }
     }
   }
+
 </script>
 
 <style scoped>
@@ -157,4 +163,5 @@
     overflow: hidden;
     /*overflow-y: scroll;*/
   }
+
 </style>

@@ -3,15 +3,14 @@
     <nav-bar class="home-nav">
       <div slot="center">购物街</div>
     </nav-bar>
-    <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load="true"
+    <scroll class="content" ref="scroll" :probe-type="3" :pull-up-load="true" @scroll="contentScroll"
       @pullingUp="loadMore">
       <home-swiper :banners="banners" />
       <recommend-view :recommends="recommends" />
       <feature-view />
-      <tab-control class="tab-control" :titles="['流行', '新款', '精选']" @tabClick="tabClick" />
+      <tab-control class="tab-control" :titles="['流行', '新款', '精选']" @tabClick="tabClick" ref="tab-control" />
       <good-list :goods="showGoods" />
     </scroll>
-    <div>呵呵呵呵</div>
     <back-top @click.native="backClick" v-show="isShowBackTop" />
   </div>
 </template>
@@ -63,7 +62,10 @@
           }
         },
         currentType: "pop",
-        isShowBackTop: false
+        isShowBackTop: false,
+        isTabFixed: false,
+        tabOffsetTop: 0,
+        saveY: 0
       };
     },
     computed: {
@@ -80,10 +82,27 @@
       this.getHomeGoods("new");
       this.getHomeGoods("sell");
     },
+    mounted() {
+      // 1.图片加载完成的事件监听
+      const refresh = this.debounce(this.$refs.scroll.refresh, 50)
+      // 调用事件总线中的方法
+      this.$bus.$on('itemImageLoad', () => {
+        refresh()
+      })
+    },
     methods: {
       /**
        * 事件监听相关的方法
        */
+      debounce(func, delay) {
+        let timer = null
+        return function (...args) {
+          if (timer) clearTimeout(timer)
+          timer = setTimeout(() => {
+            func.apply(this, args)
+          }, delay)
+        }
+      },
       tabClick(index) {
         switch (index) {
           case 0:
@@ -97,14 +116,15 @@
             break;
         }
       },
-      backClick() {
-        this.$refs.scroll.scrollTo(0, 0);
-      },
       contentScroll(position) {
-        this.isShowBackTop = -position.y > 1000;
+        this.isShowBackTop = (-position.y) > 1000
+        this.isTabFixed = (-position.y) > this.tabOffsetTop
+      },
+      backClick() {
+        this.$refs.scroll.scrollTo(0, 0)
       },
       loadMore() {
-        this.getHomeGoods(this.currentType);
+        this.getHomeGoods(this.currentType)
       },
       /**
        * 网络请求相关的方法
@@ -132,7 +152,7 @@
 
 <style scoped>
   #home {
-    /*padding-top: 44px;*/
+    /* padding-top: 44px; */
     height: 100vh;
     position: relative;
   }
